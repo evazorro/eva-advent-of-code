@@ -7,16 +7,24 @@ import java.util.*;
 
 public class day1 {
 
-    public static void multiplyEntries(Integer entry1, Integer entry2) {
-        System.out.println(entry1 * entry2);
+    public static void multiplyEntries(Integer... entries) {
+        Integer total = 1;
+        for (Integer entry : entries) {
+            total = total * entry;
+        }
+        System.out.println(total);
     }
 
     public static void findComplement(Set<Integer> entries) {
         for (Integer entry : entries) {
-            int toFind = 2020 - entry;
-            if (entries.contains(toFind)) {
-                multiplyEntries(entry, toFind);
-                break;
+            int remainingTwoThirds = 2020 - entry;
+            //entries.remove(entry); // so you don't check it multiple times? -- this didn't work, and I don't know how to make it stop after finding the answer once
+            for (Integer secondEntry : entries) {
+                Integer thirdEntry = remainingTwoThirds - secondEntry;
+                if (entries.contains(thirdEntry)) {
+                    multiplyEntries(entry, secondEntry, thirdEntry);
+                    break;
+                }
             }
         }
     }
