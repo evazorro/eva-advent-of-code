@@ -1,3 +1,4 @@
 .DS_STORE
 .idea/
 eva-advent-of-code.iml
+out/

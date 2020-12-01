@@ -38,7 +38,7 @@ public class day1 {
         List<Integer> masses = new ArrayList<Integer>();
 
         try {
-            File input = new File("/Users/eparish/git/advent-of-code/src/com/evaparish/year2019/resources/day1_input.txt");
+            File input = new File("src/com/evaparish/year2019/resources/day1_input.txt");
             Scanner scanner = new Scanner(input);
             while (scanner.hasNextLine()) {
                 String currentLine = scanner.nextLine();
