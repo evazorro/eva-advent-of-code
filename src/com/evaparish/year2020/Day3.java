@@ -17,15 +17,15 @@ public class Day3 {
     * Put it into a 2-D array but repeat each row a few times to the right??
     * Look up the value at index [i+1][j+3]
     * */
-    private static int calculateNumTrees(List<String> tobogganMap) {
+    private static int calculateNumTrees(List<String> tobogganMap, int numRight, int numDown) {
         int numTrees = 0;
         int currentCol = 0;
-        for (int i = 0; i < tobogganMap.size(); i++) {
+        for (int i = 0; i < tobogganMap.size(); i = i+numDown) {
             char treeOrSquare = tobogganMap.get(i).charAt(currentCol);
             if (treeOrSquare == '#') {
                 numTrees ++;
             }
-            currentCol += 3;
+            currentCol += numRight;
         }
         return numTrees;
     }
@@ -59,9 +59,18 @@ public class Day3 {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        int numTrees = calculateNumTrees(tobogganMap);
+        int numTrees = calculateNumTrees(tobogganMap, 1, 1);
         System.out.println("The number of trees for that path is: " + numTrees);
+        int numTrees2 = calculateNumTrees(tobogganMap, 3, 1);
+        System.out.println("The number of trees for that path is: " + numTrees2);
+        int numTrees3 = calculateNumTrees(tobogganMap, 5, 1);
+        System.out.println("The number of trees for that path is: " + numTrees3);
+        int numTrees4 = calculateNumTrees(tobogganMap, 7, 1);
+        System.out.println("The number of trees for that path is: " + numTrees4);
+        int numTrees5 = calculateNumTrees(tobogganMap, 1, 2);
+        System.out.println("The number of trees for that path is: " + numTrees5);
 
+        System.out.println("The total number of trees multiplied is: " + (numTrees*numTrees2*numTrees3*numTrees4*numTrees5));
     }
 
 }
