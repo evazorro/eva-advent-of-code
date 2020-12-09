@@ -21,40 +21,73 @@ public class Day6 {
             e.printStackTrace();
         }
 
-        // I think I want an array of sets, count the # of items in each set, then add
-        List<GroupAnswer> allGroups = new ArrayList<>();
         String tmpAnswer = "";
+        int tmpGroupSize = 0;
+        int allYesAnswers = 0;
+        int allSharedYesAnswers = 0;
         for (int i = 0; i < lines.size(); i++) {
             String currentLine = lines.get(i);
             if (i == (lines.size()-1)) {
                 tmpAnswer = tmpAnswer.concat(currentLine);
-                GroupAnswer answer = new GroupAnswer(tmpAnswer);
-                allGroups.add(answer);
+                tmpGroupSize++;
+                Group group = new Group(tmpAnswer, tmpGroupSize);
+                allYesAnswers += group.allYesAnswers();
+                allSharedYesAnswers += group.sharedYesAnswers();
             } else if (currentLine.equals("")) {
-                GroupAnswer answer = new GroupAnswer(tmpAnswer);
-                allGroups.add(answer);
+                Group group = new Group(tmpAnswer, tmpGroupSize);
+                allYesAnswers += group.allYesAnswers();
+                allSharedYesAnswers += group.sharedYesAnswers();
                 tmpAnswer = "";
+                tmpGroupSize = 0;
             } else {
                 tmpAnswer = tmpAnswer.concat(currentLine);
+                tmpGroupSize++;
             }
         }
-        int allAnswersCount = 0;
-        for (int i = 0; i < allGroups.size(); i++) {
-            GroupAnswer answer = allGroups.get(i);
-            System.out.println(answer);
-            int count = answer.yesAnswers.size();
-            allAnswersCount += count;
-        }
-        System.out.println(allAnswersCount);
+
+        System.out.println("Part 1 answer: " + allYesAnswers);
+        System.out.println("Part 2 answer: " + allSharedYesAnswers);
+
     }
 
-    private static class GroupAnswer {
-        Set<Character> yesAnswers = new HashSet<>();
 
-        public GroupAnswer(String input) {
-            for (int i = 0; i < input.length(); i++) {
-                yesAnswers.add(input.charAt(i));
+    private static class Group {
+        String yesAnswers;
+        int groupSize;
+
+        public Group(String input, int size) {
+            this.yesAnswers = input;
+            this.groupSize = size;
+        }
+
+        private int allYesAnswers() {
+            Set<Character> yesSet = new HashSet<>();
+            for (int i = 0; i < yesAnswers.length(); i++) {
+                yesSet.add(yesAnswers.charAt(i));
             }
+            return yesSet.size();
+        }
+
+        private int sharedYesAnswers() {
+            // for each string of answers, put the count per letter in a map
+            Map<Character, Integer> yesMap = new HashMap<>();
+            for (int i = 0; i < yesAnswers.length(); i++) {
+                char letter = yesAnswers.charAt(i);
+                if (yesMap.containsKey(letter)) {
+                    yesMap.put(letter, yesMap.get(letter) + 1);
+                } else {
+                    yesMap.put(letter, 1);
+                }
+            }
+            // compare the count of each letter to group size
+            int sharedYesAnswers = 0;
+            for (Map.Entry<Character, Integer> entry : yesMap.entrySet()) {
+                if (entry.getValue() == groupSize) {
+                    sharedYesAnswers++;
+                }
+            }
+            return sharedYesAnswers;
         }
     }
+
 }
